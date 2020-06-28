@@ -19,6 +19,10 @@ namespace Dodge_example
         Planet[] planet = new Planet[7];
         Random yspeed = new Random();
         Spaceship spaceship = new Spaceship();
+        bool left, right;
+        int score, lives;
+        string move;
+
 
         public FrmDodge()
         {
@@ -52,6 +56,35 @@ namespace Dodge_example
 
         }
 
+        private void FrmDodge_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.Left) { left = true; }
+            if (e.KeyData == Keys.Right) { right = true; }
+
+        }
+
+        private void FrmDodge_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.Left) { left = false; }
+            if (e.KeyData == Keys.Right) { right = false; }
+
+        }
+
+        private void TmrShip_Tick(object sender, EventArgs e)
+        {
+            if (right) // if right arrow key pressed
+            {
+                move = "right";
+                spaceship.MoveSpaceship(move);
+            }
+            if (left) // if left arrow key pressed
+            {
+                move = "left";
+                spaceship.MoveSpaceship(move);
+            }
+
+        }
+
         private void TmrPlanet_Tick(object sender, EventArgs e)
         {
             for (int i = 0; i < 7; i++)
@@ -61,6 +94,9 @@ namespace Dodge_example
                 //if a planet reaches the bottom of the Game Area reposition it at the top
                 if (planet[i].y >= PnlGame.Height)
                 {
+                    score += 1;//update the score
+                    lblScore.Text = score.ToString();// display score
+
                     planet[i].y = 30;
                 }
             }
